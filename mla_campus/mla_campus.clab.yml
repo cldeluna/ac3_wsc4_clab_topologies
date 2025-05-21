@@ -107,6 +107,6 @@ topology:
     - endpoints: ["mla-acc4:eth3", "mla-acc4a:eth1"]
     - endpoints: ["mla-acc4:eth4", "mla-acc4a:eth2"]
 
-mgmt:
-  network: clab-mgmt
-  ipv4-subnet: 172.20.20.0/24
+#mgmt:
+#  network: clab-mgmt
+#  ipv4-subnet: 172.20.20.0/24
