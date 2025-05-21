@@ -1,0 +1,112 @@
+name: mla-network
+
+topology:
+  nodes:
+    mla-core1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-core1-config.txt
+      ports:
+        - "2271:22"
+      mgmt-ipv4: 172.20.20.71
+
+    mla-core2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-core2-config.txt
+      ports:
+        - "2272:22"
+      mgmt-ipv4: 172.20.20.72
+
+    mla-dist1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-dist1-config.txt
+      ports:
+        - "2273:22"
+      mgmt-ipv4: 172.20.20.73
+
+    mla-dist2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-dist2-config.txt
+      ports:
+        - "2274:22"
+      mgmt-ipv4: 172.20.20.74
+
+    mla-acc1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-acc1-config.txt
+      ports:
+        - "2275:22"
+      mgmt-ipv4: 172.20.20.75
+
+    mla-acc2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-acc2-config.txt
+      ports:
+        - "2276:22"
+      mgmt-ipv4: 172.20.20.76
+
+    mla-acc3:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-acc3-config.txt
+      ports:
+        - "2277:22"
+      mgmt-ipv4: 172.20.20.77
+
+    mla-acc4:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-acc4-config.txt
+      ports:
+        - "2278:22"
+      mgmt-ipv4: 172.20.20.78
+
+    mla-acc4a:
+      kind: ceos
+      image: ceos:latest
+      startup-config: mla-acc4a-config.txt
+      ports:
+        - "2279:22"
+      mgmt-ipv4: 172.20.20.79
+
+  links:
+    # Core Interlinks
+    - endpoints: ["mla-core1:eth10", "mla-core2:eth10"]
+    - endpoints: ["mla-core1:eth11", "mla-core2:eth11"]
+
+    # DIST Interlinks
+    - endpoints: ["mla-dist1:eth9", "mla-dist2:eth9"]
+    - endpoints: ["mla-dist1:eth10", "mla-dist2:eth10"]
+    - endpoints: ["mla-dist1:eth11", "mla-dist2:eth11"]
+
+    # Core to Distribution Links
+    - endpoints: ["mla-core1:eth1", "mla-dist1:eth1"]
+    - endpoints: ["mla-core1:eth2", "mla-dist2:eth1"]
+    - endpoints: ["mla-core2:eth1", "mla-dist1:eth2"]
+    - endpoints: ["mla-core2:eth2", "mla-dist2:eth2"]
+
+    # Distribution to Access Links (LACP)
+    # Dist1 to Access Switches
+    - endpoints: ["mla-dist1:eth3", "mla-acc1:eth1"]
+    - endpoints: ["mla-dist1:eth4", "mla-acc2:eth1"]
+    - endpoints: ["mla-dist1:eth5", "mla-acc3:eth1"]
+    - endpoints: ["mla-dist1:eth6", "mla-acc4:eth1"]
+
+    # Dist2 to Access Switches
+    - endpoints: ["mla-dist2:eth3", "mla-acc1:eth2"]
+    - endpoints: ["mla-dist2:eth4", "mla-acc2:eth2"]
+    - endpoints: ["mla-dist2:eth5", "mla-acc3:eth2"]
+    - endpoints: ["mla-dist2:eth6", "mla-acc4:eth2"]
+
+    # Nested 4a
+    - endpoints: ["mla-acc4:eth3", "mla-acc4a:eth1"]
+    - endpoints: ["mla-acc4:eth4", "mla-acc4a:eth2"]
+
+mgmt:
+  network: clab-mgmt
+  ipv4-subnet: 172.20.20.0/24

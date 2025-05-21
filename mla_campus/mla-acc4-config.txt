@@ -1,0 +1,94 @@
+! sin-acc4.cfg
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+hostname sin-acc4
+!
+spanning-tree mode pvst
+!
+aaa root secret admin
+!
+username admin privilege 15 role network-admin secret admin
+username claudia privilege 15 role network-admin secret dodgers
+!
+management ssh
+   ip access-group default-mgmt
+   ipv6 access-group default-mgmt
+   idle-timeout 60
+   authentication mode password
+   login timeout 60
+   no shutdown
+!
+management api http-commands
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+      ssl profile octa-ssl
+!
+management api netconf
+   transport ssh default
+!
+vlan 100
+   name VLAN100-192.168.100.0/24
+!
+vlan 200
+   name VLAN200-192.168.200.0/24
+!
+vlan 300
+   name VLAN300-192.168.300.0/24
+!
+vlan 400
+   name VLAN300-192.168.400.0/24
+!
+interface Management0
+   ip address 172.20.20.68/24
+!
+ip route 0.0.0.0/0 172.20.20.1
+! Distribution Layer Connection
+
+!
+interface Ethernet1
+   description To-Distribution-1
+   switchport mode trunk
+   switchport trunk allowed vlan 100,200,300
+!
+interface Ethernet2
+   description To-Distribution-2
+   switchport mode trunk
+   switchport trunk allowed vlan 100,200,300
+!
+interface Ethernet3
+   description To-ACC4a-eth1
+!   channel-group 1 mode active
+   switchport mode trunk
+   switchport trunk allowed vlan 100,200,300,400
+!
+interface Ethernet4
+   description To-ACC4a-eth2
+!   channel-group 1 mode active
+   switchport mode trunk
+   switchport trunk allowed vlan 100,200,300,400
+!
+! VLAN 100 Access Ports
+interface Ethernet5-9
+   switchport access vlan 100
+   switchport mode access
+!
+! VLAN 200 Access Ports
+interface Ethernet10-14
+   switchport access vlan 200
+   switchport mode access
+!
+! VLAN 300 Access Ports
+interface Ethernet15-19
+   switchport access vlan 300
+   switchport mode access
+!
+end
