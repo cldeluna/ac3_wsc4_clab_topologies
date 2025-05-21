@@ -1,0 +1,111 @@
+name: sin-network
+
+topology:
+  nodes:
+    sin-core1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-core1-config.txt
+      ports:
+        - "2261:22"
+      mgmt-ipv4: 172.20.20.61
+
+    sin-core2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-core2-config.txt
+      ports:
+        - "2262:22"
+      mgmt-ipv4: 172.20.20.62
+
+    sin-dist1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-dist1-config.txt
+      ports:
+        - "2263:22"
+      mgmt-ipv4: 172.20.20.63
+
+    sin-dist2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-dist2-config.txt
+      ports:
+        - "2264:22"
+      mgmt-ipv4: 172.20.20.64
+
+    sin-acc1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-acc1-config.txt
+      ports:
+        - "2265:22"
+      mgmt-ipv4: 172.20.20.65
+
+    sin-acc2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-acc2-config.txt
+      ports:
+        - "2266:22"
+      mgmt-ipv4: 172.20.20.66
+
+    sin-acc3:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-acc3-config.txt
+      ports:
+        - "2267:22"
+      mgmt-ipv4: 172.20.20.67
+
+    sin-acc4:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-acc4-config.txt
+      ports:
+        - "2268:22"
+      mgmt-ipv4: 172.20.20.68
+
+    sin-acc4a:
+      kind: ceos
+      image: ceos:latest
+      startup-config: sin-acc4a-config.txt
+      ports:
+        - "2269:22"
+      mgmt-ipv4: 172.20.20.69
+
+  links:
+    # Core Interlinks
+    - endpoints: ["sin-core1:eth10", "sin-core2:eth10"]
+    - endpoints: ["sin-core1:eth11", "sin-core2:eth11"]
+
+    # DIST Interlinks
+    - endpoints: ["sin-dist1:eth10", "sin-dist2:eth10"]
+    - endpoints: ["sin-dist1:eth11", "sin-dist2:eth11"]
+
+    # Core to Distribution Links
+    - endpoints: ["sin-core1:eth1", "sin-dist1:eth1"]
+    - endpoints: ["sin-core1:eth2", "sin-dist2:eth1"]
+    - endpoints: ["sin-core2:eth1", "sin-dist1:eth2"]
+    - endpoints: ["sin-core2:eth2", "sin-dist2:eth2"]
+
+    # Distribution to Access Links (LACP)
+    # Dist1 to Access Switches
+    - endpoints: ["sin-dist1:eth3", "sin-acc1:eth1"]
+    - endpoints: ["sin-dist1:eth4", "sin-acc2:eth1"]
+    - endpoints: ["sin-dist1:eth5", "sin-acc3:eth1"]
+    - endpoints: ["sin-dist1:eth6", "sin-acc4:eth1"]
+
+    # Dist2 to Access Switches
+    - endpoints: ["sin-dist2:eth3", "sin-acc1:eth2"]
+    - endpoints: ["sin-dist2:eth4", "sin-acc2:eth2"]
+    - endpoints: ["sin-dist2:eth5", "sin-acc3:eth2"]
+    - endpoints: ["sin-dist2:eth6", "sin-acc4:eth2"]
+
+    # Nested 4a
+    - endpoints: ["sin-acc4:eth3", "sin-acc4a:eth1"]
+    - endpoints: ["sin-acc4:eth4", "sin-acc4a:eth2"]
+
+#mgmt:
+#  network: clab-mgmt
+#  ipv4-subnet: 172.20.20.0/24

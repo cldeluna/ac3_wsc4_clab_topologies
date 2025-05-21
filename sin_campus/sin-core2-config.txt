@@ -1,0 +1,104 @@
+! sin-core2.cfg
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+hostname sin-core2
+!
+spanning-tree mode pvst
+spanning-tree vlan 1-4094 priority 8192
+!
+aaa root secret admin
+!
+username admin privilege 15 role network-admin secret admin
+username claudia privilege 15 role network-admin secret dodgers
+!
+management ssh
+   ip access-group default-mgmt
+   ipv6 access-group default-mgmt
+   idle-timeout 60
+   authentication mode password
+   login timeout 60
+   no shutdown
+!
+ip routing
+ipv6 unicast-routing
+ip multicast-routing
+ipv6 multicast-routing
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+service routing protocols model multi-agent
+!
+management api http-commands
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+      ssl profile octa-ssl
+!
+management api netconf
+   transport ssh default
+!
+vlan 4094
+   trunk group MLAGPEER
+!
+interface Management0
+   ip address 172.20.20.62/24
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+! MLAG Configuration
+interface Vlan4094
+   ip address 10.0.0.2/30
+!
+interface Ethernet10
+   description MLAG PEER LINK
+   channel-group 1000 mode active
+!
+interface Ethernet11
+   description MLAG PEER LINK
+   channel-group 1000 mode active
+!
+interface Port-Channel1000
+   description MLAG Peer-link to Core1
+   switchport mode trunk
+   switchport trunk group MLAGPEER
+!
+mlag configuration
+   domain-id CORE
+   local-interface Vlan4094
+   peer-address 10.0.0.1
+   peer-link Port-Channel1000
+!
+! Distribution Layer Connection
+interface Port-Channel10
+   description To-Distribution-Pair
+   no switchport
+   ip address 2.2.2.2/24
+   mlag 10
+!
+interface Ethernet1
+   description To-Distribution-Pair dist1-eth2
+   channel-group 10 mode active
+   no switchport
+!
+interface Ethernet2
+   description To-Distribution-Pair dist2-eth2
+   channel-group 10 mode active
+   no switchport
+!
+router ospf 100
+   network 2.2.2.0/24 area 0
+!
+end
