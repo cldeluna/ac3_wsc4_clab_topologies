@@ -1,0 +1,63 @@
+!
+hostname lax-wan-router1
+!
+username admin privilege 15 role network-admin secret admin
+username claudia privilege 15 role network-admin secret dodgers
+!
+interface Management0
+   ip address 172.20.20.50/24
+   no shutdown
+!
+interface Ethernet1
+   no switchport
+   ip address 10.1.1.1/30
+   no shutdown
+!
+interface Ethernet2
+   no switchport
+   ip address 10.1.1.5/30
+   no shutdown
+!
+ip routing
+!
+router bgp 65000
+   router-id 172.20.20.50
+   neighbor 10.1.1.2 remote-as 65001
+   neighbor 10.1.1.6 remote-as 65002
+   !
+   address-family ipv4
+      network 172.20.20.0/24
+      neighbor 10.1.1.2 activate
+      neighbor 10.1.1.6 activate
+!
+management api http-commands
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+aaa authorization exec default local
+!
+enable password admin
+!
+end

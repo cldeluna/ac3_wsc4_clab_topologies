@@ -1,0 +1,146 @@
+!
+hostname lax-dist2
+!
+spanning-tree mode pvst
+spanning-tree vlan 100-500 priority 4096
+!
+username admin privilege 15 role network-admin secret admin
+username claudia privilege 15 role network-admin secret dodgers
+!
+vlan 100
+   name LAX_Campus_192.168.1.0/24
+!
+vlan 200
+   name LAX_Campus_192.168.2.0/24
+!
+vlan 300
+   name LAX_Campus_192.168.3.0/24
+!
+vlan 400
+   name LAX_Campus_192.168.4.0/24
+!
+vlan 500
+   name LAX_Campus_192.168.5.0/24
+!
+interface Management0
+   ip address 172.20.20.43/24
+   no shutdown
+!
+interface Ethernet1
+   description TO-CORE1
+   channel-group 1 mode active
+!
+interface Ethernet2
+   description TO-CORE2
+   channel-group 1 mode active
+!
+interface Ethernet3
+   description MLAG PEER LINK
+   channel-group 1000 mode active
+!
+interface Ethernet4
+   description TO-ACCESS1
+   channel-group 10 mode active
+!
+interface Ethernet5
+   description TO-ACCESS2
+   channel-group 11 mode active
+!
+interface Ethernet6
+   description TO-ACCESS3
+   channel-group 12 mode active
+!
+interface Port-Channel1
+   description TO-CORE
+   switchport mode trunk
+   switchport trunk allowed vlan 100-500
+!
+interface Port-Channel10
+   description TO-ACCESS1
+   switchport mode trunk
+   switchport trunk allowed vlan 100-500
+   mlag 10
+!
+interface Port-Channel11
+   description TO-ACCESS2
+   switchport mode trunk
+   switchport trunk allowed vlan 100-500
+   mlag 11
+!
+interface Port-Channel12
+   description TO-ACCESS3
+   switchport mode trunk
+   switchport trunk allowed vlan 100-500
+   mlag 12
+!
+interface Port-Channel1000
+   description MLAG PEER LINK
+   switchport mode trunk
+   switchport trunk allowed vlan 100-500,4094
+!
+interface Vlan100
+   ip address 192.168.1.5/24
+   ip ospf area 0
+!
+interface Vlan200
+   ip address 192.168.2.5/24
+   ip ospf area 0
+!
+interface Vlan300
+   ip address 192.168.3.5/24
+   ip ospf area 0
+!
+interface Vlan400
+   ip address 192.168.4.5/24
+   ip ospf area 0
+!
+interface Vlan500
+   ip address 192.168.5.5/24
+   ip ospf area 0
+!
+interface Vlan4094
+   description MLAG PEER LINK
+   ip address 1.1.2.4/24
+!
+mlag configuration
+   domain-id LAX_DIST
+   local-interface Vlan4094
+   peer-address 1.1.2.3
+   peer-link Port-Channel1000
+!
+ip routing
+!
+router ospf 1
+   router-id 172.20.20.43
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+management api http-commands
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+aaa authorization exec default local
+!
+enable password admin
+!
+end

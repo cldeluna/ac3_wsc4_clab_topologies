@@ -1,0 +1,156 @@
+name: three-tier-network
+
+topology:
+  nodes:
+    lax-wan-router1:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2250:22"
+      mgmt_ipv4: 172.20.20.50/24
+      startup-config: lax-wan-router1.cfg
+
+    # LAX Core Switches
+    lax-core1:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2240:22"
+      mgmt_ipv4: 172.20.20.40/24
+      startup-config: lax-core1.cfg
+      
+    lax-core2:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2241:22"
+      mgmt_ipv4: 172.20.20.41/24
+      startup-config: lax-core2.cfg
+
+    # LAX Distribution Switches
+    lax-dist1:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2242:22"
+      mgmt_ipv4: 172.20.20.42/24
+      startup-config: lax-dist1.cfg
+      
+    lax-dist2:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2243:22"
+      mgmt_ipv4: 172.20.20.43/24
+      startup-config: lax-dist2.cfg
+
+    # LAX Access Switches
+    lax-access1:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2244:22"
+      mgmt_ipv4: 172.20.20.44/24
+      startup-config: lax-access1.cfg
+      
+    lax-access2:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2245:22"
+      mgmt_ipv4: 172.20.20.45/24
+      startup-config: lax-access2.cfg
+      
+    lax-access3:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2246:22"
+      mgmt_ipv4: 172.20.20.46/24
+      startup-config: lax-access3.cfg
+
+    # LAX-DLR Core Switches
+    lax-dlr-core1:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2251:22"
+      mgmt_ipv4: 172.20.20.51/24
+      startup-config: lax-dlr-core1.cfg
+      
+    lax-dlr-core2:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2252:22"
+      mgmt_ipv4: 172.20.20.52/24
+      startup-config: lax-dlr-core2.cfg
+
+    # LAX-DLR Distribution Switches
+    lax-dlr-dist1:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2253:22"
+      mgmt_ipv4: 172.20.20.53/24
+      startup-config: lax-dlr-dist1.cfg
+      
+    lax-dlr-dist2:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2254:22"
+      mgmt_ipv4: 172.20.20.54/24
+      startup-config: lax-dlr-dist2.cfg
+
+    # LAX-DLR Access Switches
+    lax-dlr-access1:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2255:22"
+      mgmt_ipv4: 172.20.20.55/24
+      startup-config: lax-dlr-access1.cfg
+      
+    lax-dlr-access2:
+      kind: ceos
+      image: ceos:latest
+      ports:
+        - "2256:22"
+      mgmt_ipv4: 172.20.20.56/24
+      startup-config: lax-dlr-access2.cfg
+
+  links:
+    # LAX Core Links
+    - endpoints: ["lax-core1:eth1", "lax-core2:eth1"]
+    - endpoints: ["lax-core1:eth2", "lax-dist1:eth1"]
+    - endpoints: ["lax-core1:eth3", "lax-dist2:eth1"]
+    - endpoints: ["lax-core2:eth2", "lax-dist1:eth2"]
+    - endpoints: ["lax-core2:eth3", "lax-dist2:eth2"]
+    
+    # LAX Distribution Links
+    - endpoints: ["lax-dist1:eth3", "lax-dist2:eth3"]
+    - endpoints: ["lax-dist1:eth4", "lax-access1:eth1"]
+    - endpoints: ["lax-dist1:eth5", "lax-access2:eth1"]
+    - endpoints: ["lax-dist1:eth6", "lax-access3:eth1"]
+    - endpoints: ["lax-dist2:eth4", "lax-access1:eth2"]
+    - endpoints: ["lax-dist2:eth5", "lax-access2:eth2"]
+    - endpoints: ["lax-dist2:eth6", "lax-access3:eth2"]
+
+    # LAX-DLR Core Links
+    - endpoints: ["lax-dlr-core1:eth1", "lax-dlr-core2:eth1"]
+    - endpoints: ["lax-dlr-core1:eth2", "lax-dlr-dist1:eth1"]
+    - endpoints: ["lax-dlr-core1:eth3", "lax-dlr-dist2:eth1"]
+    - endpoints: ["lax-dlr-core2:eth2", "lax-dlr-dist1:eth2"]
+    - endpoints: ["lax-dlr-core2:eth3", "lax-dlr-dist2:eth2"]
+    
+    # LAX-DLR Distribution Links
+    - endpoints: ["lax-dlr-dist1:eth3", "lax-dlr-dist2:eth3"]
+    - endpoints: ["lax-dlr-dist1:eth4", "lax-dlr-access1:eth1"]
+    - endpoints: ["lax-dlr-dist1:eth5", "lax-dlr-access2:eth1"]
+    - endpoints: ["lax-dlr-dist2:eth4", "lax-dlr-access1:eth2"]
+    - endpoints: ["lax-dlr-dist2:eth5", "lax-dlr-access2:eth2"]
+
+    # WAN Router Links
+    - endpoints: ["lax-wan-router1:eth1", "lax-core1:eth4"]
+    - endpoints: ["lax-wan-router1:eth2", "lax-dlr-core1:eth4"]
