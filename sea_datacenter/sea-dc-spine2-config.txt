@@ -8,7 +8,7 @@ service routing protocols model multi-agent
 !
 hostname sea-dc-spine2
 !
-spanning-tree mode pvst
+spanning-tree mode rapid-pvst
 !
 aaa root secret admin
 !
