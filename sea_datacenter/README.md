@@ -4,7 +4,7 @@
   
      docker exec -it clab-dc1-sea-dc-XXXX sh
      
-  Update and configure desktop IP address
+  Update and configure host IP address
 
      apk update
 
