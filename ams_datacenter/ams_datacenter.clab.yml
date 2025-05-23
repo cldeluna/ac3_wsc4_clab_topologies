@@ -1,0 +1,140 @@
+name: dc2
+
+topology:
+  nodes:
+    ams-dc-spine1:
+      kind: ceos
+      image: ceos:4.34.0F
+      startup-config: ams-dc-spine1-config.txt
+      ports:
+        - "23121:22"
+      mgmt-ipv4: 172.20.20.121
+
+    ams-dc-spine2:
+      kind: ceos
+      image: ceos:4.33.2F
+      startup-config: ams-dc-spine2-config.txt
+      ports:
+        - "23122:22"
+      mgmt-ipv4: 172.20.20.122
+
+    ams-dc-leaf1:
+      kind: ceos
+      image: ceos:4.33.2F
+      startup-config: ams-dc-leaf1-config.txt
+      ports:
+        - "23123:22"
+      mgmt-ipv4: 172.20.20.123
+
+    ams-dc-leaf2:
+      kind: ceos
+      image: ceos:4.33.2F
+      startup-config: ams-dc-leaf2-config.txt
+      ports:
+        - "23124:22"
+      mgmt-ipv4: 172.20.20.124
+
+    ams-dc-leaf3:
+      kind: ceos
+      image: ceos:4.33.2F
+      startup-config: ams-dc-leaf3-config.txt
+      ports:
+        - "23125:22"
+      mgmt-ipv4: 172.20.20.125
+
+    ams-dc-leaf4:
+      kind: ceos
+      image: ceos:4.33.2F
+      startup-config: ams-dc-leaf4-config.txt
+      ports:
+        - "23126:22"
+      mgmt-ipv4: 172.20.20.126
+
+    ams-dc-host1:
+      kind: linux
+      image: alpine:latest
+      cmd: sleep infinity
+      ports:
+        - "22127:22"
+      mgmt-ipv4: 172.20.20.127
+
+    ams-dc-host2:
+      kind: linux
+      image: alpine:latest
+      cmd: sleep infinity
+      ports:
+        - "22128:22"
+      mgmt-ipv4: 172.20.20.128
+
+    ams-dc-host3:
+      kind: linux
+      image: alpine:latest
+      cmd: sleep infinity
+      ports:
+        - "23129:22"
+      mgmt-ipv4: 172.20.20.129
+
+    ams-dc-host4:
+      kind: linux
+      image: alpine:latest
+      cmd: sleep infinity
+      ports:
+        - "22130:22"
+      mgmt-ipv4: 172.20.20.130
+
+    ams-dc-host5:
+      kind: linux
+      image: alpine:latest
+      cmd: sleep infinity
+      ports:
+        - "23131:22"
+      mgmt-ipv4: 172.20.20.131
+
+    ams-dc-host6:
+      kind: linux
+      image: alpine:latest
+      cmd: sleep infinity
+      ports:
+        - "23132:22"
+      mgmt-ipv4: 172.20.20.132
+
+    ams-dc-host7:
+      kind: linux
+      image: alpine:latest
+      cmd: sleep infinity
+      ports:
+        - "23133:22"
+      mgmt-ipv4: 172.20.20.133
+
+
+  links:
+    # Spine Interlinks (MLAG - if required)
+    - endpoints: ["ams-dc-spine1:eth1", "ams-dc-spine2:eth1"]
+    - endpoints: ["ams-dc-spine1:eth6", "ams-dc-spine2:eth6"]
+    # Spine to Leaf Interlinks (Fabric - BGP)   
+    - endpoints: ["ams-dc-spine1:eth2", "ams-dc-leaf1:eth2"]
+    - endpoints: ["ams-dc-spine1:eth3", "ams-dc-leaf2:eth2"]
+    - endpoints: ["ams-dc-spine1:eth4", "ams-dc-leaf3:eth2"]
+    - endpoints: ["ams-dc-spine1:eth5", "ams-dc-leaf4:eth2"]
+    - endpoints: ["ams-dc-spine2:eth2", "ams-dc-leaf1:eth3"]
+    - endpoints: ["ams-dc-spine2:eth3", "ams-dc-leaf2:eth3"]
+    - endpoints: ["ams-dc-spine2:eth4", "ams-dc-leaf3:eth3"]
+    - endpoints: ["ams-dc-spine2:eth5", "ams-dc-leaf4:eth3"]
+    # Leaf to Leaf Interlinks (MLAG)     
+    - endpoints: ["ams-dc-leaf1:eth1", "ams-dc-leaf2:eth1"]
+    - endpoints: ["ams-dc-leaf1:eth4", "ams-dc-leaf2:eth4"]
+    - endpoints: ["ams-dc-leaf3:eth1", "ams-dc-leaf4:eth1"]
+    - endpoints: ["ams-dc-leaf3:eth4", "ams-dc-leaf4:eth4"]
+    # Leaf to Host Downlinks
+    - endpoints: ["ams-dc-leaf1:eth5", "ams-dc-host1:eth1"]
+    - endpoints: ["ams-dc-leaf2:eth15", "ams-dc-host2:eth1"]
+    - endpoints: ["ams-dc-leaf3:eth5", "ams-dc-host3:eth1"]
+    - endpoints: ["ams-dc-leaf4:eth15", "ams-dc-host4:eth1"]
+    - endpoints: ["ams-dc-leaf1:eth10", "ams-dc-host5:eth1"]
+    - endpoints: ["ams-dc-leaf3:eth10", "ams-dc-host6:eth1"]
+    - endpoints: ["ams-dc-leaf4:eth20", "ams-dc-host7:eth1"]
+
+
+#mgmt:
+#  network: clab-mgmt
+#  ipv4-subnet: 172.20.20.0/24

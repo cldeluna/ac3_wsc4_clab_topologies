@@ -1,0 +1,125 @@
+aaa root secret sha512 $6$p6.45h2wBfbvf2uj$wKzhS9nltecjzXUMQqdUCA0yj8CQy42VLsNdZsxXIoTau/EBitz8EAVm1H16f1ucOY69djavbIY.mSzBwi/qN1
+!
+username admin privilege 15 role network-admin secret sha512 $6$7iosDaIUW.cZj5JI$j2qUrl71y4rrGivAQO3yoRO6CrTOXoGbL09t0hR0aXuQPgEc6aLPZ4OwUUsGfBXgQRwYefn0w.oeM1WTDh25l1
+!
+management api http-commands
+   no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname ams-dc-spine1
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+clock timezone CET
+!
+vrf instance MGMT
+!
+management api gnmi
+   transport grpc default
+      ssl profile octa-ssl
+!
+management api netconf
+   transport ssh default
+!
+interface Ethernet1
+   shutdown
+!
+interface Ethernet2
+   description ams-dc-leaf1_eth2
+   no switchport
+   ip address 10.50.1.0/31
+   ip ospf retransmit-interval 1800
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha512 7 g3VEsd4RW4U7Kf0BYPe4PQ==
+!
+interface Ethernet3
+   description ams-dc-leaf2_eth2
+   no switchport
+   ip address 10.50.1.2/31
+   ip ospf retransmit-interval 1800
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha512 7 g3VEsd4RW4U7Kf0BYPe4PQ==
+!
+interface Ethernet4
+   description ams-dc-leaf3_eth2
+   no switchport
+   ip address 10.50.1.4/31
+   ip ospf retransmit-interval 1800
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha512 7 k1LF899bSLlpX/cCBTzFwg==
+!
+interface Ethernet5
+   description ams-dc-leaf4_eth2
+   no switchport
+   ip address 10.50.1.6/31
+   ip ospf retransmit-interval 1800
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha512 7 k1LF899bSLlpX/cCBTzFwg==
+!
+interface Ethernet6
+   shutdown
+!
+interface Ethernet7
+   shutdown
+!
+interface Ethernet8
+   shutdown
+!
+interface Loopback0
+   description mgmt_l0
+   ip address 10.150.1.1/32
+!
+interface Management0
+   description oob_mgmt
+   vrf MGMT
+   ip address 172.20.20.121/24
+   ipv6 address 3fff:172:20:20::d/64
+!
+ip routing
+ip routing vrf MGMT
+!
+ip route vrf MGMT 0.0.0.0/0 172.20.20.1
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+router ospf 100
+   router-id 10.150.1.1
+   bfd default
+   passive-interface default
+   no passive-interface Ethernet2
+   no passive-interface Ethernet3
+   no passive-interface Ethernet4
+   no passive-interface Ethernet5
+   network 10.50.1.0/32 area 0.0.0.0
+   network 10.50.1.2/32 area 0.0.0.0
+   network 10.50.1.4/32 area 0.0.0.0
+   network 10.50.1.6/32 area 0.0.0.0
+   network 10.150.1.1/32 area 0.0.0.0
+   max-lsa 12000
+   log-adjacency-changes detail
+   maximum-paths 128
+!
+management ssh
+   idle-timeout 60
+   authentication mode password
+   login timeout 60
+!
+end

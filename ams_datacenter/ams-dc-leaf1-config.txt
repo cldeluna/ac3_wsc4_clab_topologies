@@ -1,0 +1,184 @@
+aaa root secret sha512 $6$oIoyQWCHkvOVS0fy$4.EmlQzfgABDJJ3Q32sru9rgWFqpWE3DdCkfXf0mx1aivaoHze8hfLbsRP7rvRalnlD1UjUUbuXpj5Bl/QI6b0
+!
+username admin privilege 15 role network-admin secret sha512 $6$jnCoNOSMmWtfhynV$Uoedrmzkq0tYXla.WNpHKJgMw7no8eDtkSwzhpE804MOedqWJBeLWv9trxWeJdznavfLXtqcHbZ3PIJ3F1juo/
+!
+management api http-commands
+   no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname ams-dc-leaf1
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+clock timezone CET
+!
+vlan 2100
+   name host_vlan2100
+!
+vlan 2200
+   name host_vlan2200
+!
+vlan 2300
+   name host_vlan2300
+!
+vlan 2400
+   name host_vlan2400
+!
+vlan 4094
+   name mlagpeer
+   trunk group mlagpeer
+!
+vrf instance MGMT
+!
+management api gnmi
+   transport grpc default
+      ssl profile octa-ssl
+!
+management api netconf
+   transport ssh default
+!
+interface Port-Channel1
+   description mlag_peer-link
+   switchport mode trunk
+   switchport trunk group mlagpeer
+!
+interface Ethernet1
+   description mlag_peer-link
+   channel-group 1 mode active
+!
+interface Ethernet2
+   description ams-dc-spine1_eth2
+   no switchport
+   ip address 10.50.1.1/31
+   ip ospf retransmit-interval 1800
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha512 7 g3VEsd4RW4U7Kf0BYPe4PQ==
+!
+interface Ethernet3
+   description ams-dc-spine2_eth2
+   no switchport
+   ip address 10.50.2.1/31
+   ip ospf retransmit-interval 1800
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha512 7 g3VEsd4RW4U7Kf0BYPe4PQ==
+!
+interface Ethernet4
+   description mlag_peer-link
+   channel-group 1 mode active
+!
+interface Ethernet5
+   description ams-dc-host1
+   switchport access vlan 2100
+!
+interface Ethernet10
+   description ams-dc-host5
+   switchport access vlan 2200
+!
+interface Loopback0
+   description mgmt_l0
+   ip address 10.250.1.1/32
+!
+interface Loopback1
+   description vxlan_tunnel_source
+   ip address 10.251.1.1/32
+!
+interface Management0
+   description oob_mgmt
+   vrf MGMT
+   ip address 172.20.20.123/24
+   ipv6 address 3fff:172:20:20::c/64
+!
+interface Vlan2100
+   description host_vlan2100
+   ip address 10.210.0.2/24
+   ip virtual-router address 10.210.0.1
+!
+interface Vlan2200
+   description host_vlan2200
+   ip address 10.220.0.2/24
+   ip virtual-router address 10.220.0.1
+!
+interface Vlan2300
+   description host_vlan2300
+   ip address 10.230.0.2/24
+   ip virtual-router address 10.230.0.1
+!
+interface Vlan2400
+   description host_vlan2400
+   ip address 10.240.0.2/24
+   ip virtual-router address 10.240.0.1
+!
+interface Vlan4094
+   description mlag_local-interface
+   no autostate
+   ip address 10.254.254.1/30
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha512 7 6vGRCrTCLidtuU/MXyP8Iw==
+!
+interface Vxlan1
+   description vxlan1_interface
+   vxlan source-interface Loopback1
+   vxlan udp-port 4789
+   vxlan vlan 2100 vni 2100
+   vxlan vlan 2200 vni 2200
+   vxlan vlan 2300 vni 2300
+   vxlan vlan 2400 vni 2400
+   vxlan flood vtep 10.251.1.3
+!
+ip virtual-router mac-address 00:1c:73:00:00:ff
+!
+ip routing
+ip routing vrf MGMT
+!
+mlag configuration
+   domain-id MLAG
+   local-interface Vlan4094
+   peer-address 10.254.254.2
+   peer-address heartbeat 10.254.254.2
+   peer-link Port-Channel1
+   dual-primary detection delay 10 action errdisable all-interfaces
+   dual-primary recovery delay mlag 60 non-mlag 0
+!
+ip route vrf MGMT 0.0.0.0/0 172.20.20.1
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+router ospf 100
+   router-id 10.250.1.1
+   bfd default
+   passive-interface default
+   no passive-interface Ethernet2
+   no passive-interface Ethernet3
+   no passive-interface Vlan4094
+   network 10.50.1.1/32 area 0.0.0.0
+   network 10.50.2.1/32 area 0.0.0.0
+   network 10.250.1.1/32 area 0.0.0.0
+   network 10.251.1.1/32 area 0.0.0.0
+   network 10.254.254.1/32 area 0.0.0.0
+   max-lsa 12000
+   log-adjacency-changes detail
+   maximum-paths 4
+!
+management ssh
+   idle-timeout 60
+   authentication mode password
+   login timeout 60
+!
+end
