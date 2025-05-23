@@ -1,4 +1,4 @@
-_Data Center Leaf/Spine VXLAN topology with BGP underlay_
+_Data Center Leaf/Spine topology, VXLAN, MLAG, BGP underlay_
 
 **Configure Apline Hosts**
 
