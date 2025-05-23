@@ -1,4 +1,4 @@
-_Data Center Leaf/Spine VXLAN topology with OSPF underlay_
+_Data Center Leaf/Spine VXLAN topology using OSPF underlay_
 
 **Configure Apline Hosts**
 
