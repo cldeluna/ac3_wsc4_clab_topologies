@@ -1,0 +1,67 @@
+---
+sources:
+- name: sin_inventory_source
+  hosts:
+  - url: ssh://172.16.14.5:2261
+  - url: ssh://172.16.14.5:2262
+  - url: ssh://172.16.14.5:2263
+  - url: ssh://172.16.14.5:2264
+  - url: ssh://172.16.14.5:2265
+  - url: ssh://172.16.14.5:2266
+  - url: ssh://172.16.14.5:2267
+  - url: ssh://172.16.14.5:2268
+  - url: ssh://172.16.14.5:2269
+
+- name: sea_inventory_source
+  hosts:
+  - url: ssh://172.16.14.5:23101
+  - url: ssh://172.16.14.5:23102
+  - url: ssh://172.16.14.5:23103
+  - url: ssh://172.16.14.5:23104
+  - url: ssh://172.16.14.5:23105
+  - url: ssh://172.16.14.5:23106
+  - url: ssh://172.16.14.5:23107
+  - url: ssh://172.16.14.5:23108
+  - url: ssh://172.16.14.5:23109
+  - url: ssh://172.16.14.5:23110
+  - url: ssh://172.16.14.5:23111
+  - url: ssh://172.16.14.5:23112
+  - url: ssh://172.16.14.5:23113
+
+
+devices:
+- name: cisco_ios_devices
+  transport: ssh
+  ignore-known-hosts: true
+  slow-host: true
+  port: 22
+  retries-on-auth-fail: 2
+  per-cmd-auth: true
+  poll-period:
+    "*": 300
+- name: ceos_devices
+  transport: ssh
+  devtype: eos
+  ignore-known-hosts: true
+  slow-host: true
+  port: 22
+  retries-on-auth-fail: 2
+  per-cmd-auth: true
+  poll-period:
+    "*": 300
+
+
+auths:
+- name: eos-admin
+  username: admin
+  password: plain:admin
+
+namespaces:
+- name: SIN_Campus
+  source: sin_inventory_source
+  device: ceos_devices
+  auth: eos-admin
+- name: SEA_DC
+  source: sin_inventory_source
+  device: ceos_devices
+  auth: eos-admin
