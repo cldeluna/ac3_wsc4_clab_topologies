@@ -1,4 +1,4 @@
-! sea-datacenter.cfg
+! sea-datacenter
 !
 no service interface inactive port-id allocation disabled
 !

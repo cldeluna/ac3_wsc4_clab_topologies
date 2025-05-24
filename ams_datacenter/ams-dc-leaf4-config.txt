@@ -1,9 +1,26 @@
-aaa root secret sha512 $6$ay2odIORbt4vtujy$pMnMUQvo5/EAPQCXl2OKAks3ZWM860uCWVKzoqlyoqhKN8tsDNcNG1yQpBUCtCjmueGlCunR7aL/7M9WcVWKb0
+! ams-datacenter
+aaa root secret admin
 !
-username admin privilege 15 role network-admin secret sha512 $6$sFTaDSJePPtDPbgj$WAJ9SInZ/lf.98uHSzoMOBahWYJdkSQ044zD3Y31pwgHIg1N70tXlsqqKHnK51UXkB0wnkyIw0CYd.q79x3EW.
+username admin privilege 15 role network-admin secret admin
+
+management ssh
+   ip access-group default-mgmt
+   ipv6 access-group default-mgmt
+   idle-timeout 60
+   authentication mode password
+   login timeout 60
+   no shutdown
 !
 management api http-commands
    no shutdown
+!
+management api gnmi
+   transport grpc default
+      ssl profile octa-ssl
+!
+management api netconf
+   transport ssh default
+!
 !
 no service interface inactive port-id allocation disabled
 !
