@@ -8,7 +8,7 @@ topology:
       startup-config: gdl-core1-config.txt
       ports:
         - "2230:22"
-      mgmt_ipv4: 172.20.20.51
+      mgmt-ipv4: 172.20.20.51
 
     gdl-core2:
       kind: ceos
@@ -16,7 +16,7 @@ topology:
       startup-config: gdl-core2-config.txt
       ports:
         - "2231:22"
-      mgmt_ipv4: 172.20.20.52
+      mgmt-ipv4: 172.20.20.52
 
     gdl-dist1:
       kind: ceos
@@ -24,7 +24,7 @@ topology:
       startup-config: gdl-dist1-config.txt
       ports:
         - "2232:22"
-      mgmt_ipv4: 172.20.20.53
+      mgmt-ipv4: 172.20.20.53
 
     gdl-dist2:
       kind: ceos
@@ -32,7 +32,7 @@ topology:
       startup-config: gdl-dist2-config.txt
       ports:
         - "2233:22"
-      mgmt_ipv4: 172.20.20.54
+      mgmt-ipv4: 172.20.20.54
 
     gdl-acc1:
       kind: ceos
@@ -40,7 +40,7 @@ topology:
       startup-config: gdl-acc1-config.txt
       ports:
         - "2234:22"
-      mgmt_ipv4: 172.20.20.55
+      mgmt-ipv4: 172.20.20.55
 
     gdl-acc2:
       kind: ceos
@@ -48,7 +48,7 @@ topology:
       startup-config: gdl-acc2-config.txt
       ports:
         - "2235:22"
-      mgmt_ipv4: 172.20.20.56
+      mgmt-ipv4: 172.20.20.56
 
     gdl-acc3:
       kind: ceos
@@ -56,7 +56,7 @@ topology:
       startup-config: gdl-acc3-config.txt
       ports:
         - "2236:22"
-      mgmt_ipv4: 172.20.20.57
+      mgmt-ipv4: 172.20.20.57
 
     gdl-acc4:
       kind: ceos
@@ -64,7 +64,7 @@ topology:
       startup-config: gdl-acc4-config.txt
       ports:
         - "2237:22"
-      mgmt_ipv4: 172.20.20.58
+      mgmt-ipv4: 172.20.20.58
 
     gdl-acc5:
       kind: ceos
@@ -72,7 +72,7 @@ topology:
       startup-config: gdl-acc5-config.txt
       ports:
         - "2238:22"
-      mgmt_ipv4: 172.20.20.59
+      mgmt-ipv4: 172.20.20.59
 
   links:
     # Core to Distribution Links
