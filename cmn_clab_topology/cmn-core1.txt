@@ -1,0 +1,70 @@
+! Core1 Configuration
+!
+hostname cnm-core1
+!
+
+aaa root secret admin
+!
+username admin privilege 15 role network-admin secret admin
+username claudia privilege 15 role network-admin secret dodgers
+
+ip routing
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 1-4094 priority 0
+!
+! 192.168.9.0 255.255.255.224
+vlan 9
+   name v9_Servers_192.168.9.224/27
+!
+vlan 2
+   name v2_P2PL3_192.168.9.128/30
+!
+!
+interface Management0
+   ip address 172.20.20.40/24
+   no shutdown
+!
+interface Vlan9
+   description Servers
+   ip address 192.168.9.225/27
+   no shutdown
+!
+interface Vlan2
+   description Layer3_P2P
+   ip address 192.168.9.129/30
+   no shutdown
+!
+interface Loopback0
+   ip address 192.169.9.1/32
+!
+interface Ethernet1
+   description Link-to-Dist1
+   switchport trunk allowed vlan 2
+   switchport mode trunk
+   no shutdown
+
+!
+router ospf 1
+   network 192.168.9.1/32 area0
+   network 192.168.9.128/30 area0
+
+!
+management api http-commands
+   protocol http
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+   no shutdown
+!
+management api netconf
+   transport ssh default
+   no shutdown
+!
+management ssh
+   no shutdown
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+end

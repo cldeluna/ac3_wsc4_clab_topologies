@@ -11,6 +11,13 @@ sources:
   - url: ssh://172.16.14.5:2236
   - url: ssh://172.16.14.5:2237
   - url: ssh://172.16.14.5:2238
+- name: cmn_inventory_source
+  hosts:
+  - url: ssh://172.16.14.5:2246
+  - url: ssh://172.16.14.5:2247  
+  - url: ssh://172.16.14.5:2248
+  - url: ssh://172.16.14.5:2249
+  - url: ssh://172.16.14.5:2250  
 - name: sin_inventory_source
   hosts:
   - url: ssh://172.16.14.5:2261
@@ -85,6 +92,10 @@ auths:
 namespaces:
 - name: GDL_Campus
   source: gdl_inventory_source
+  device: ceos_devices
+  auth: eos-admin
+- name: CMN_Campus
+  source: cmn_inventory_source
   device: ceos_devices
   auth: eos-admin
 - name: SIN_Campus

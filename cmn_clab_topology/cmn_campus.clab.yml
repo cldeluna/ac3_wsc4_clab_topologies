@@ -1,0 +1,58 @@
+name: cmn_campus
+
+topology:
+  nodes:
+    cmn-core1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: cmn-core1.txt
+      ports:
+        - "2246:22"
+      mgmt-ipv4: 172.20.20.46
+      
+    cmn-dist1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: cmn-dist1.txt
+      ports:
+        - "2247:22"
+      mgmt-ipv4: 172.20.20.47
+      
+    cmn-acc1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: cmn-acc1.txt
+      ports:
+        - "2248:22"
+      mgmt-ipv4: 172.20.20.48
+      
+    cmn-acc2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: cmn-acc2.txt
+      ports:
+        - "2249:22"
+      mgmt-ipv4: 172.20.20.49
+      
+    cmn-acc3:
+      kind: ceos
+      image: ceos:latest
+      startup-config: cmn-acc3.txt
+      ports:
+        - "2250:22"
+      mgmt-ipv4: 172.20.20.50
+        
+ 
+
+  links:
+    - endpoints: ["cmn-core1:eth1", "cmn-dist1:eth1"]
+    - endpoints: ["cmn-dist1:eth2", "cmn-acc1:eth1"]
+    - endpoints: ["cmn-dist1:eth3", "cmn-acc2:eth1"]
+    - endpoints: ["cmn-acc1:eth5", "cmn-acc2:eth5"]
+    - endpoints: ["cmn-acc3:eth1", "cmn-acc1:eth4"]
+    - endpoints: ["cmn-acc3:eth2", "cmn-acc2:eth4"]
+
+
+mgmt:
+  network: clab-mgmt
+  ipv4-subnet: 172.20.20.0/24

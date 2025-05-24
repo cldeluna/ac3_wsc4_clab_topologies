@@ -1,0 +1,61 @@
+! CMN-Acc3 Configuration
+!
+hostname cmn-acc3
+
+aaa root secret admin
+!
+username admin privilege 15 role network-admin secret admin
+username claudia privilege 15 role network-admin secret dodgers
+!
+ip routing
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 1-4094 priority 8192
+!
+vlan 10
+   name v10_Data_192.168.10.0/24
+!
+vlan 20
+   name v20_BldA_192.168.20.0/24
+!
+vlan 30
+   name v30_IoT_192.168.30.0/24
+!
+interface Management0
+   ip address 172.20.20.50/24
+   no shutdown
+!
+interface Vlan10
+   ip address 192.168.10.7/24
+   no shutdown
+!
+interface Ethernet1
+   description Link-to-Acc1
+   switchport trunk allowed vlan 10,20,30
+   switchport mode trunk
+   no shutdown
+!
+interface Ethernet2
+   description Link-to-acc2
+   switchport trunk allowed vlan 10,20,30
+   switchport mode trunk
+   no shutdown
+   
+management api http-commands
+   protocol http
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+   no shutdown
+!
+management api netconf
+   transport ssh default
+   no shutdown
+!
+management ssh
+   no shutdown
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+end
