@@ -28,6 +28,21 @@ sources:
   - url: ssh://172.16.14.5:23112
   - url: ssh://172.16.14.5:23113
 
+- name: ams_inventory_source
+  hosts:
+  - url: ssh://172.16.14.5:23121
+  - url: ssh://172.16.14.5:23122
+  - url: ssh://172.16.14.5:23123
+  - url: ssh://172.16.14.5:23124
+  - url: ssh://172.16.14.5:23125
+  - url: ssh://172.16.14.5:23126
+  - url: ssh://172.16.14.5:23127
+  - url: ssh://172.16.14.5:23128
+  - url: ssh://172.16.14.5:23129
+  - url: ssh://172.16.14.5:23130
+  - url: ssh://172.16.14.5:23131
+  - url: ssh://172.16.14.5:23132
+  - url: ssh://172.16.14.5:23133
 
 devices:
 - name: cisco_ios_devices
@@ -65,3 +80,7 @@ namespaces:
   source: sin_inventory_source
   device: ceos_devices
   auth: eos-admin
+- name: AMS_DC
+  source: ams_inventory_source
+  device: ceos_devices
+  auth: eos-admin  
