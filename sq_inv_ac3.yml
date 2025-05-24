@@ -77,7 +77,7 @@ namespaces:
   device: ceos_devices
   auth: eos-admin
 - name: SEA_DC
-  source: sin_inventory_source
+  source: sea_inventory_source
   device: ceos_devices
   auth: eos-admin
 - name: AMS_DC
