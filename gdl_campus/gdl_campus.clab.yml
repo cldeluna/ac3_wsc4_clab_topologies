@@ -1,0 +1,107 @@
+name: gdl-network
+
+topology:
+  nodes:
+    gdl-core1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-core1.cfg
+      ports:
+        - "2230:22"
+      mgmt_ipv4: 172.20.20.51
+
+    gdl-core2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-core2.cfg
+      ports:
+        - "2231:22"
+      mgmt_ipv4: 172.20.20.52
+
+    gdl-dist1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-dist1.cfg
+      ports:
+        - "2232:22"
+      mgmt_ipv4: 172.20.20.53
+
+    gdl-dist2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-dist2.cfg
+      ports:
+        - "2233:22"
+      mgmt_ipv4: 172.20.20.54
+
+    gdl-acc1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-acc1.cfg
+      ports:
+        - "2234:22"
+      mgmt_ipv4: 172.20.20.55
+
+    gdl-acc2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-acc2.cfg
+      ports:
+        - "2235:22"
+      mgmt_ipv4: 172.20.20.56
+
+    gdl-acc3:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-acc3.cfg
+      ports:
+        - "2236:22"
+      mgmt_ipv4: 172.20.20.57
+
+    gdl-acc4:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-acc4.cfg
+      ports:
+        - "2237:22"
+      mgmt_ipv4: 172.20.20.58
+
+    gdl-acc5:
+      kind: ceos
+      image: ceos:latest
+      startup-config: gdl-acc5.cfg
+      ports:
+        - "2238:22"
+      mgmt_ipv4: 172.20.20.59
+
+  links:
+    # Core to Distribution Links
+    - endpoints: ["gdl-core1:eth1", "gdl-dist1:eth1"]
+    - endpoints: ["gdl-core1:eth2", "gdl-dist2:eth1"]
+    - endpoints: ["gdl-core2:eth1", "gdl-dist1:eth2"]
+    - endpoints: ["gdl-core2:eth2", "gdl-dist2:eth2"]
+
+    # Distribution to Access Links (LACP)
+    # Dist1 to Access Switches
+    - endpoints: ["gdl-dist1:eth3", "gdl-acc1:eth1"]
+    - endpoints: ["gdl-dist1:eth4", "gdl-acc1:eth2"]
+    - endpoints: ["gdl-dist1:eth5", "gdl-acc2:eth1"]
+    - endpoints: ["gdl-dist1:eth6", "gdl-acc2:eth2"]
+    - endpoints: ["gdl-dist1:eth7", "gdl-acc3:eth1"]
+    - endpoints: ["gdl-dist1:eth8", "gdl-acc3:eth2"]
+    - endpoints: ["gdl-dist1:eth9", "gdl-acc4:eth1"]
+    - endpoints: ["gdl-dist1:eth10", "gdl-acc4:eth2"]
+    - endpoints: ["gdl-dist1:eth11", "gdl-acc5:eth1"]
+    - endpoints: ["gdl-dist1:eth12", "gdl-acc5:eth2"]
+
+    # Dist2 to Access Switches
+    - endpoints: ["gdl-dist2:eth3", "gdl-acc1:eth3"]
+    - endpoints: ["gdl-dist2:eth4", "gdl-acc1:eth4"]
+    - endpoints: ["gdl-dist2:eth5", "gdl-acc2:eth3"]
+    - endpoints: ["gdl-dist2:eth6", "gdl-acc2:eth4"]
+    - endpoints: ["gdl-dist2:eth7", "gdl-acc3:eth3"]
+    - endpoints: ["gdl-dist2:eth8", "gdl-acc3:eth4"]
+    - endpoints: ["gdl-dist2:eth9", "gdl-acc4:eth3"]
+    - endpoints: ["gdl-dist2:eth10", "gdl-acc4:eth4"]
+    - endpoints: ["gdl-dist2:eth11", "gdl-acc5:eth3"]
+    - endpoints: ["gdl-dist2:eth12", "gdl-acc5:eth4"]

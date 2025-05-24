@@ -1,5 +1,16 @@
 ---
 sources:
+- name: gdl_inventory_source
+  hosts:
+  - url: ssh://172.16.14.5:2230
+  - url: ssh://172.16.14.5:2231
+  - url: ssh://172.16.14.5:2232
+  - url: ssh://172.16.14.5:2233
+  - url: ssh://172.16.14.5:2234
+  - url: ssh://172.16.14.5:2235
+  - url: ssh://172.16.14.5:2236
+  - url: ssh://172.16.14.5:2237
+  - url: ssh://172.16.14.5:2238
 - name: sin_inventory_source
   hosts:
   - url: ssh://172.16.14.5:2261
@@ -72,6 +83,10 @@ auths:
   password: plain:admin
 
 namespaces:
+- name: GDL_Campus
+  source: gdl_inventory_source
+  device: ceos_devices
+  auth: eos-admin
 - name: SIN_Campus
   source: sin_inventory_source
   device: ceos_devices
