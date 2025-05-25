@@ -7,40 +7,40 @@ topology:
       image: ceos:latest
       startup-config: ord-core1.txt
       ports:
-        - "2230:22"
-      mgmt-ipv4: 172.20.20.30
+        - "2220:22"
+      mgmt-ipv4: 172.20.20.20
       
     ord-dist1:
       kind: ceos
       image: ceos:latest
       startup-config: ord-dist1.txt
       ports:
-        - "2231:22"
-      mgmt-ipv4: 172.20.20.31
+        - "2221:22"
+      mgmt-ipv4: 172.20.20.21
       
     ord-acc1:
       kind: ceos
       image: ceos:latest
       startup-config: ord-acc1.txt
       ports:
-        - "2232:22"
-      mgmt-ipv4: 172.20.20.32
+        - "2222:22"
+      mgmt-ipv4: 172.20.20.22
       
     ord-acc2:
       kind: ceos
       image: ceos:latest
       startup-config: ord-acc2.txt
       ports:
-        - "2233:22"
-      mgmt-ipv4: 172.20.20.33
+        - "2223:22"
+      mgmt-ipv4: 172.20.20.23
       
     ord-acc3:
       kind: ceos
       image: ceos:latest
       startup-config: ord-acc3.txt
       ports:
-        - "2234:22"
-      mgmt-ipv4: 172.20.20.34
+        - "2224:22"
+      mgmt-ipv4: 172.20.20.24
   
 
   links:

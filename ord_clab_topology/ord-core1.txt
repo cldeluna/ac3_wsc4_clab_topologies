@@ -24,7 +24,7 @@ vlan 200
    name SERVER_192.168.200.0/24
 !
 interface Management0
-   ip address 172.20.20.30/24
+   ip address 172.20.20.20/24
    no shutdown
 !
 interface Vlan9
