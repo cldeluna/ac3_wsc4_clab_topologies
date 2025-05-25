@@ -1,6 +1,6 @@
 ! Dist1 Configuration
 !
-hostname cnm-dist1
+hostname ord-dist1
 
 aaa root secret admin
 !

@@ -1,6 +1,6 @@
 ! Core1 Configuration
 !
-hostname cnm-core1
+hostname ord-core1
 !
 
 aaa root secret admin

@@ -1,6 +1,6 @@
-! CMN-Acc3 Configuration
+! ORD-Acc3 Configuration
 !
-hostname cmn-acc3
+hostname ord-acc3
 
 aaa root secret admin
 !

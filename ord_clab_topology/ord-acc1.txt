@@ -1,6 +1,6 @@
-! CMN-Acc1 Configuration
+! ORD-Acc1 Configuration
 !
-hostname cmn-acc1
+hostname ord-acc1
 
 aaa root secret admin
 !
