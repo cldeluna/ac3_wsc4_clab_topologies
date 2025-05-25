@@ -9,7 +9,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, OSPF underlay_
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.210.0.101 netmask 255.255.255.0
      route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.210.0.1 dev eth1
-     ping -i 30 10.210.0.102
+     nohup ping -i 30 10.210.0.102 &
      
   ams-dc-host2
   
@@ -18,7 +18,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, OSPF underlay_
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.230.0.101 netmask 255.255.255.0
      route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.230.0.1 dev eth1
-     ping -i 30 10.230.0.102
+     nohup ping -i 30 10.230.0.102 &
 
   ams-dc-host3
   
@@ -27,7 +27,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, OSPF underlay_
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.210.0.101 netmask 255.255.255.0
      route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.210.0.1 dev eth1
-     ping -i 30 10.210.0.102
+     nohup ping -i 30 10.240.0.101 &
 
   ams-dc-host4
   
@@ -36,7 +36,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, OSPF underlay_
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.230.0.102 netmask 255.255.255.0
      route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.230.0.1 dev eth1
-     ping -i 30 10.240.0.101
+     nohup ping -i 30 10.230.0.101 &
 
   ams-dc-host5
   
@@ -45,7 +45,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, OSPF underlay_
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.220.0.101 netmask 255.255.255.0
      route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.220.0.1 dev eth1
-     ping -i 30 10.220.0.102
+     nohup ping -i 30 10.220.0.102 &
 
   ams-dc-host6
   
@@ -54,7 +54,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, OSPF underlay_
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.220.0.102 netmask 255.255.255.0
      route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.220.0.1 dev eth1
-     ping -i 30 10.240.0.101
+     nohup ping -i 30 10.240.0.101 &
 
   ams-dc-host7
   
@@ -63,3 +63,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, OSPF underlay_
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.240.0.101 netmask 255.255.255.0
      route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.240.0.1 dev eth1
+     nohup ping -i 30 10.220.0.101 &
+
+
+     
