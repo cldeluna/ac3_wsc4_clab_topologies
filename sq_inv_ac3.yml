@@ -18,6 +18,13 @@ sources:
   - url: ssh://172.16.14.5:2248
   - url: ssh://172.16.14.5:2249
   - url: ssh://172.16.14.5:2250  
+- name: ord_inventory_source
+  hosts:
+  - url: ssh://172.16.14.5:2230
+  - url: ssh://172.16.14.5:2231  
+  - url: ssh://172.16.14.5:2232
+  - url: ssh://172.16.14.5:2233
+  - url: ssh://172.16.14.5:2234  
 - name: sin_inventory_source
   hosts:
   - url: ssh://172.16.14.5:2261
@@ -38,13 +45,13 @@ sources:
   - url: ssh://172.16.14.5:23104
   - url: ssh://172.16.14.5:23105
   - url: ssh://172.16.14.5:23106
-  - url: ssh://172.16.14.5:23107
-  - url: ssh://172.16.14.5:23108
-  - url: ssh://172.16.14.5:23109
-  - url: ssh://172.16.14.5:23110
-  - url: ssh://172.16.14.5:23111
-  - url: ssh://172.16.14.5:23112
-  - url: ssh://172.16.14.5:23113
+  # - url: ssh://172.16.14.5:23107
+  # - url: ssh://172.16.14.5:23108
+  # - url: ssh://172.16.14.5:23109
+  # - url: ssh://172.16.14.5:23110
+  # - url: ssh://172.16.14.5:23111
+  # - url: ssh://172.16.14.5:23112
+  # - url: ssh://172.16.14.5:23113
 
 - name: ams_inventory_source
   hosts:
@@ -54,13 +61,13 @@ sources:
   - url: ssh://172.16.14.5:23124
   - url: ssh://172.16.14.5:23125
   - url: ssh://172.16.14.5:23126
-  - url: ssh://172.16.14.5:23127
-  - url: ssh://172.16.14.5:23128
-  - url: ssh://172.16.14.5:23129
-  - url: ssh://172.16.14.5:23130
-  - url: ssh://172.16.14.5:23131
-  - url: ssh://172.16.14.5:23132
-  - url: ssh://172.16.14.5:23133
+  # - url: ssh://172.16.14.5:23127
+  # - url: ssh://172.16.14.5:23128
+  # - url: ssh://172.16.14.5:23129
+  # - url: ssh://172.16.14.5:23130
+  # - url: ssh://172.16.14.5:23131
+  # - url: ssh://172.16.14.5:23132
+  # - url: ssh://172.16.14.5:23133
 
 devices:
 - name: cisco_ios_devices
@@ -96,6 +103,10 @@ namespaces:
   auth: eos-admin
 - name: CMN_Campus
   source: cmn_inventory_source
+  device: ceos_devices
+  auth: eos-admin
+- name: ORD_Campus
+  source: ord_inventory_source
   device: ceos_devices
   auth: eos-admin
 - name: SIN_Campus
