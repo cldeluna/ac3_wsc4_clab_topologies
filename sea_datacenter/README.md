@@ -31,7 +31,7 @@ _Data Center Leaf/Spine topology, VXLAN, MLAG, BGP underlay_
 
   sea-dc-host4
   
-     docker exec -it clab-dc2-sea-dc-host4 sh
+     docker exec -it clab-dc1-sea-dc-host4 sh
      apk update
      apk add net-tools iproute2 iputils-ping
      ifconfig eth1 10.130.0.102 netmask 255.255.255.0
