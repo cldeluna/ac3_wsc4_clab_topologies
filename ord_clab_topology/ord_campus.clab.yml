@@ -1,0 +1,52 @@
+name: ord_campus
+
+topology:
+  nodes:
+    ord-core1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: ord-core1.txt
+      ports:
+        - "2230:22"
+      mgmt-ipv4: 172.20.20.30
+      
+    ord-dist1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: ord-dist1.txt
+      ports:
+        - "2231:22"
+      mgmt-ipv4: 172.20.20.31
+      
+    ord-acc1:
+      kind: ceos
+      image: ceos:latest
+      startup-config: ord-acc1.txt
+      ports:
+        - "2232:22"
+      mgmt-ipv4: 172.20.20.32
+      
+    ord-acc2:
+      kind: ceos
+      image: ceos:latest
+      startup-config: ord-acc2.txt
+      ports:
+        - "2233:22"
+      mgmt-ipv4: 172.20.20.33
+      
+    ord-acc3:
+      kind: ceos
+      image: ceos:latest
+      startup-config: ord-acc3.txt
+      ports:
+        - "2234:22"
+      mgmt-ipv4: 172.20.20.34
+  
+
+  links:
+    - endpoints: ["ord-core1:eth1", "ord-dist1:eth1"]
+    - endpoints: ["ord-dist1:eth2", "ord-acc1:eth1"]
+    - endpoints: ["ord-dist1:eth3", "ord-acc2:eth1"]
+    - endpoints: ["ord-acc1:eth5", "ord-acc2:eth5"]
+    - endpoints: ["ord-acc3:eth1", "ord-acc1:eth4"]
+    - endpoints: ["ord-acc3:eth2", "ord-acc2:eth4"]
